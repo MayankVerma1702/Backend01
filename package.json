@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "backend_project",
   "version": "1.0.0",
-  "description": "backend development of the project ",
+  "description": "A project focused on backend functionalities",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,6 @@
     "javascript",
     "backend"
   ],
-  "author": "Mayank",
+  "author": "Mayank Verma",
   "license": "ISC"
 }
