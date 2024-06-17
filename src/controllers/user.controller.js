@@ -17,13 +17,13 @@ const registerUser = asyncHandler( async (req,res) => {
 
     const {email, username, fullname, password} = req.body
 
-    console.log("email", email);
+    // console.log("email", email);
 
     if ([email,fullname,username,password].some( (field) => field?.trim() ==="" ) ) {
         throw new ApiError(400, "All fields are required")
     }
 
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{username}, {email}]              // Check for the availability of any one of username or email in the database
     })
 
@@ -32,7 +32,12 @@ const registerUser = asyncHandler( async (req,res) => {
     }
 
     const avtarLocalPath = req.files?.avtar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    // const coverImageLocalPath = req.files?.coverImage[0]?.path; this will give error when we donot pass coverImage
+
+    let coverImageLocalPath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path;
+    }
 
     if(!avtarLocalPath){
         throw new ApiError(400, "Avtar is required!!")
@@ -54,7 +59,7 @@ const registerUser = asyncHandler( async (req,res) => {
         password
     })
 
-    const createdUser = await User.findById(User._id).select(
+    const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
     )
 
